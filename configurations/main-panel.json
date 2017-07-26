@@ -1,0 +1,60 @@
+{
+	"name":"Staff",
+	"url":"https://vmiis.github.io/modules/panels/panel.2.html",
+	"parameters":{
+	},
+	"modules":[
+		{
+			"module_id":"department",
+			"table_id":"20009682"
+		}
+	]
+	,"panel":
+	{
+		"columns":
+		[
+			{
+				"sections":
+				[
+					{
+						"name":"My Information",
+						"modules":
+						[
+							{
+								"module_id":"public_info",
+								"name":"Public information",
+								"table_id":"20009675",
+								"url":"/modules/my_public_info.html",
+								"single_record":"1",
+								"counting":"2"
+							}
+							,{
+								"module_id":"m_01_02",
+								"name":"Private information",
+								"table_id":"20009683",
+								"url":"/modules/my_private_info.html",
+								"single_record":"1",
+								"counting":"2"
+							}
+							,{
+								"module_id":"m_01_03",
+								"name":"Emergency contact",
+								"table_id":"20009685",
+								"url":"/modules/my_emergency_contact.html",
+								"single_record":"1",
+								"counting":"2"
+							}
+							,{
+								"module_id":"m_01_04",
+								"name":"Documents",
+								"table_id":"20009684",
+								"url":"/modules/my_document.html",
+								"counting":"2"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}
