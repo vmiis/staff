@@ -1,0 +1,107 @@
+<section>
+    VmInclude:__PARTS__/grid/grid_without_export.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__PARTS__/grid/grid.2.js
+        VmInclude:__PARTS__/style/ease-in-out.js
+        _record_type='s2';
+        //-------------------------------------
+        _fields="_Form,Short_Description,Approved_by,_Approved_Info"; //,
+		_fields+=",_gridHidden|Manager_for_Approval"
+        _fields+=",_gridHidden|Account No (if applicable)|Supplier_Account_No"
+        _fields+=",_gridHidden|Supplier_Name"
+        _fields+=",_gridHidden|Supplier_Address"
+        _fields+=",_gridHidden|Supplier_Phone"
+        _fields+=",_gridHidden|Supplier_Fax"
+        _fields+=",_gridHidden|Delivery,GST_Amount,Total_Amount,Processed_by"
+		_fields+=",_Hidden|items"
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete,_Hidden|Details";
+        //-------------------------------------
+        $('#D__ID').on('load',function(){
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Processed_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case 'Approved_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Approved_Info':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Approved_by=='') return;
+                    td.html("<u style='cursor:pointer'>Approved Info</u>");
+                    td.find('u').on('click',function(){
+                        $vm.load_module_by_name(_app_id+'my_finance_approved_info_s3',$vm.root_layout_content_slot,
+                            {rid:records[I].ID,pid_uid:_db_pid+'/'+records[I].UID}
+                        )
+                    });
+                    break;
+                case 'GST_Amount':
+                case 'Total_Amount':
+                    records[I].vm_custom[field]=true;
+                    break;
+            }
+        }
+        //-------------------------------------
+        var make_approved_info=function(record){
+            var info='';
+            var items=_fields.split(',');
+            for(var i=0;i<items.length;i++){
+                var d=items[i].split('|');
+                var n=d[0];
+                if(d.length==3 || (d.length==2 && n[0]=='_') ) n=d[1];
+                var p=d.pop();
+                var v=record[p];
+                if(v!=undefined && v!=''){
+                    if(p!=='DateTime' && p!=='Author' && p!='Group_Leader_for_Approval' && p!='Notify' && p!='Details'){
+                        info+=n.replace(/_/g,' ')+": "+v+"\r\n";
+                    }
+                }
+            }
+            info+="\r\nItem Details:\r\n\r\n";
+            info+=record.Details;
+            info=info.replace(/\r\n/g,'<br>');
+            return info;
+        }
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            dbv.S1=record.Short_Description;
+            dbv.S3=record.Group_Leader_for_Approval.split('/').pop();
+            dbv.V1=record.Total_Amount;
+            dbv.V2=record.GST_Amount;
+            return true;
+        };
+        //-------------------------------------
+        _set_req=function(){
+            _req={cmd:'query_records_s2',db_pid:_db_pid,fields:'ID,UID,Information,DateTime,Author',
+            s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        }
+        //-------------------------------------
+        _data_process_after_render=function(sr){
+            if(sr=='grid'){
+                $('#grid__ID tr').each(function(){
+                    var Approved_by="";
+                    var _Delete="";
+                    $(this).find('td').each(function(){
+                        var col = $(this).parent().children().index($(this));
+                        var column_name=$('#grid__ID th:nth-child('+(col+1)+')').attr('data-header');
+                        if(column_name=='Approved_by') Approved_by=$(this);
+                        if(column_name=='_Delete') _Delete=$(this);
+                    })
+                    if(Approved_by!="" && Approved_by.html()!=''){
+                        if(_Delete!="") _Delete.html('');
+                    }
+                })
+            }
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__PARTS__/grid/grid.css
+</style>
