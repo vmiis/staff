@@ -8,6 +8,10 @@
 			"module_id":"department",
 			"table_id":"20009682"
 		}
+		,{
+			"module_id":"managers",
+			"table_id":"20009687"
+		}
 	]
 	,"panel":
 	{
@@ -63,11 +67,17 @@
 						"modules":
 						[
 							{
-								"module_id":"purchase order request",
+								"module_id":"purchase_order_request",
 								"name":"Purchase order request",
 								"table_id":"20009699",
 								"url":"/modules/request/purchase_order.html",
-								"counting":"2"
+								"counting":"2",
+								"form_module":"purchase_order_request_form"
+							}
+							,{
+								"module_id":"purchase_order_request_form",
+								"table_id":"20009699",
+								"url":"/modules/request/purchase_order.form.html"
 							}
 						]
 					}
