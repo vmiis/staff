@@ -13,6 +13,10 @@
 			"table_id":"20009687"
 		}
 		,{
+			"module_id":"accountants",
+			"table_id":"20003837"
+		}
+		,{
 			"module_id":"purchase_order_process",
 			"table_id":"20011184"
 		}
@@ -20,6 +24,11 @@
 			"module_id":"purchase_order_email_to_manager",
 			"table_id":"--------",
 			"url":"/modules/request/purchase_order_email_to_manager.html"
+		}
+		,{
+			"module_id":"purchase_order_email_to_accountant",
+			"table_id":"--------",
+			"url":"/modules/request/purchase_order_email_to_accountant.html"
 		}
 	]
 	,"panel":

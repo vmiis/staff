@@ -6,7 +6,7 @@
         <br><br>
         <div id=contents__ID>
             Dear <span id=manager__ID></span>,<br><br>
-            There is a new purchase order needs to be approved.
+            There is a new approved purchase order needs to be processed.
             <br>
             <br>
             <span id=info__ID></span>
@@ -25,11 +25,11 @@
         VmInclude:__PARTS__/style/ease-in-out.js
         //-------------------------------------
 		var _mobj=$vm.vm['__ID'];
-        var manager;
+        var accountant;
         var email="";
         //-------------------------------------
         $('#D__ID').on('load',function(){
-            manager=_mobj.op.manager.split('/')[0];
+            accountant=_mobj.op.accountant.split('/')[0];
             email=_mobj.op.manager.split('/')[1];
             $('#manager__ID').text(manager);
             $('#info__ID').html(_mobj.op.info);

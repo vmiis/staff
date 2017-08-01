@@ -38,7 +38,6 @@
 						td.html("<u style='cursor:pointer'>Approving</u>");
 						td.find('u').on('click',function(){
 							var r=confirm("Are you sure to aprove this purchase order?")
-							alert(r)
 							if(r==true){
 								_records[I].ID=undefined;
 								_records[I].vm_dirty=1;
@@ -61,6 +60,32 @@
             }
         }
         //-------------------------------------
+		var make_approved_info=function(record){
+            var info='';
+            var fds=_fields.split(',');
+            for(var i=0;i<fds.length;i++){
+                var d=fds[i].split('|');
+                var n=d[0];
+                if(d.length==3 || (d.length==2 && n[0]=='_') ) n=d[1];
+                var p=d.pop();
+                var v=record[p];
+                if(v!=undefined && v!=''){
+                    if(p!=='DateTime' && p!=='Author' && p!='items' && p!='Approved_by' && p!='Processed_by' && p!='u_s_e_r_A' && p!='u_s_e_r_B'){
+                        info+=n.replace(/_/g,' ')+": "+v+"\r\n";
+                    }
+                }
+            }
+			if(record.items!=undefined){
+				info+="\r\nItem Details:\r\n\r\n";
+				for(var i=0;i<record.items.length;i++){
+					var gst='GST:No'; if(record.items[i].GST=='1') gst='GST:Yes';
+					info+=record.items[i].Description+", "+record.items[i].Unit_Price+"(unit price), "+record.items[i].Quantity+"(quantity), "+gst+"\r\n";
+				}
+			}
+            info=info.replace(/\r\n/g,'<br>');
+            return info;
+        }
+        //-------------------------------------
         _before_submit=function(record,dbv){
             dbv.S1=record.Short_Description;
             dbv.V1=record.Total_Amount;
@@ -68,6 +93,24 @@
 			dbv.PPID=record.PID;
 			dbv.PUID=record.UID;
             return true;
+        };
+        //-------------------------------------
+		_after_submit=function(I,res,type,dbv){
+			var info=make_approved_info(_records[I])
+			//---------------------------
+			var op={
+				//-----------------
+				sys:_sys,
+				mobj:_mobj,
+				record:_records[I],
+				//-----------------
+				rid:_records[I].ID,
+				accountant:_records[I].Accountant_for_Processing,
+				info:info,
+				//------------------
+			}
+			$vm.load_module_by_name(_ids.purchase_order_email_to_accountant,$vm.root_layout_content_slot,op)
+			//-----------------------------------------------
         };
         //-------------------------------------
 		$('#new__ID').hide();

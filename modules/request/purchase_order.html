@@ -10,6 +10,7 @@
         //-------------------------------------
         _fields="_Form,Record_ID,Short_Description";
 		_fields+=",_gridHidden|Manager_for_Approval"
+		_fields+=",_gridHidden|Accountant_for_Processing"
         _fields+=",_gridHidden|Account No (if applicable)|Supplier_Account_No"
         _fields+=",_gridHidden|Supplier_Name"
         _fields+=",_gridHidden|Supplier_Address"
@@ -58,7 +59,7 @@
                 var p=d.pop();
                 var v=record[p];
                 if(v!=undefined && v!=''){
-                    if(p!=='DateTime' && p!=='Author' && p!='items' && p!='Approved_by' && p!='Processed_by' && p!='u_s_e_r_A'){
+                    if(p!=='DateTime' && p!=='Author' && p!='items' && p!='Approved_by' && p!='Processed_by' && p!='u_s_e_r_A' && p!='u_s_e_r_B'){
                         info+=n.replace(/_/g,' ')+": "+v+"\r\n";
                     }
                 }
